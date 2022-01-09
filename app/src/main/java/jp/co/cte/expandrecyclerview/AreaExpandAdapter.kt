@@ -16,19 +16,19 @@ import jp.co.cte.expandrecyclerview.model.AreaItemView
  */
 class AreaExpandAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), FoldState{
     private val mListData: MutableList<AreaItemView> = mutableListOf()
-    private val AREA_PARENT: Int = 1;
-    private val AREA_CHILD: Int = 2;
+    private val typeAreaParent: Int = 1
+    private val typeAreaChild: Int = 2
 
     class AreaParentViewHolder(itemParentBind: ItemAreaParentBinding) : RecyclerView.ViewHolder(itemParentBind.root){
         val mItemParentBind: ItemAreaParentBinding = itemParentBind
     }
 
     class AreaChildViewHolder(itemChildBind: ItemAreaChildBinding) : RecyclerView.ViewHolder(itemChildBind.root){
-        val mItemChildBind: ItemAreaChildBinding = itemChildBind;
+        val mItemChildBind: ItemAreaChildBinding = itemChildBind
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): RecyclerView.ViewHolder {
-        if(viewType == AREA_PARENT) {
+        if(viewType == typeAreaParent) {
             val holder = AreaParentViewHolder(DataBindingUtil.inflate(LayoutInflater.from(parent.context), R.layout.item_area_parent, parent, false))
             holder.mItemParentBind.ivBtnOpenAndClose.setOnClickListener {
                 val areaItemView = holder.mItemParentBind.areaItemView
@@ -55,7 +55,7 @@ class AreaExpandAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), FoldS
     }
 
     override fun onBindViewHolder(holder: RecyclerView.ViewHolder, position: Int) {
-        val areaItemView = mListData.get(position)
+        val areaItemView = mListData[position]
         if (areaItemView.areaParent){
             val parentHolder = holder as AreaParentViewHolder
             parentHolder.mItemParentBind.areaItemView = areaItemView
@@ -67,17 +67,25 @@ class AreaExpandAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), FoldS
 
     private fun updateAreaParentItemCount(isChecked: Boolean, position: Int, isAllChildCheck: Boolean) {
         for (i in  (position-1) downTo 0) {
-            val areaItemView = mListData.get(i)
-            if (areaItemView.areaParent && areaItemView.child != null && !areaItemView.child.isEmpty()) {
-
+            val areaItemView = mListData[i]
+            if (areaItemView.areaParent && areaItemView.child != null && areaItemView.child.isNotEmpty()) {
                 if (isAllChildCheck) {
                     areaItemView.checkedCount = if (isChecked) (areaItemView.child.size - 1) else 0
+                    areaItemView.childBeChecked.clear()
+                    if (isChecked){
+                        areaItemView.childBeChecked.addAll(areaItemView.child.filter { !it.areaAllChild }.map { it.name })
+                    }
                     for (areaChild in areaItemView.child) {
                         areaChild.checkedState = isChecked
                     }
                 } else {
                     areaItemView.checkedCount = areaItemView.checkedCount + (if (isChecked) 1 else -1)
-                    areaItemView.child.get(0).checkedState = (areaItemView.checkedCount == (areaItemView.child.size - 1))
+                    areaItemView.child[0].checkedState = (areaItemView.checkedCount == (areaItemView.child.size - 1))
+                    if (isChecked) {
+                        areaItemView.childBeChecked.add(areaItemView.child[position - 1 - i].name)
+                    } else {
+                        areaItemView.childBeChecked.remove(areaItemView.child[position - 1 - i].name)
+                    }
                 }
                 notifyItemRangeChanged(i, areaItemView.child.size + 1)
                 return
@@ -90,7 +98,7 @@ class AreaExpandAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), FoldS
     }
 
     override fun getItemViewType(position: Int): Int {
-        return if(mListData.get(position).areaParent) AREA_PARENT else AREA_CHILD
+        return if(mListData[position].areaParent) typeAreaParent else typeAreaChild
     }
 
     fun initAdapterData(listData: List<AreaItemView>?){
@@ -101,8 +109,18 @@ class AreaExpandAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), FoldS
         notifyDataSetChanged()
     }
 
+    fun getAreaSelectedResult(): String{
+        val listStrAreaData = mutableListOf<String>()
+        for (itemData in mListData){
+            if (itemData.areaParent && itemData.childBeChecked.isNotEmpty()){
+                listStrAreaData.addAll(itemData.childBeChecked)
+            }
+        }
+        return listStrAreaData.toString()
+    }
+
     override fun openState(areaParent: AreaItemView, position: Int) {
-        if (areaParent.child != null && areaParent.child.size > 0) {
+        if (areaParent.child != null && areaParent.child.isNotEmpty()) {
             mListData.addAll(position + 1, areaParent.child)
             areaParent.foldedState = false
             notifyItemRangeInserted(position + 1, areaParent.child.size)
@@ -111,7 +129,7 @@ class AreaExpandAdapter : RecyclerView.Adapter<RecyclerView.ViewHolder>(), FoldS
     }
 
     override fun closeState(areaParent: AreaItemView, position: Int) {
-        if (areaParent.child != null && areaParent.child.size > 0){
+        if (areaParent.child != null && areaParent.child.isNotEmpty()){
             mListData.subList(position + 1, position + 1 + areaParent.child.size).clear()
             areaParent.foldedState = true
             notifyItemRangeRemoved(position + 1, areaParent.child.size)

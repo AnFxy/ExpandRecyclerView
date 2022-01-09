@@ -14,7 +14,7 @@ package jp.co.cte.expandrecyclerview.model
  * @param areaParent item 是否是父item
  * @param areaAllChild item 是否为子item中的"选中全部子item"
  * @param child item 的子item （这个属性只有父item才有意义）
- *
+ * @param childBeChecked 存储item的子item被选中合集 （这个属性只有父item才有意义）
  */
 data class AreaItemView(
     val name: String,
@@ -23,5 +23,6 @@ data class AreaItemView(
     var checkedState: Boolean,
     val areaParent: Boolean,
     val areaAllChild: Boolean,
-    val child: List<AreaItemView>?
+    val child: List<AreaItemView>?,
+    val childBeChecked: MutableList<String>
 )

@@ -9,6 +9,6 @@ import jp.co.cte.expandrecyclerview.model.AreaItemView
  * @date 2022/1/9
  */
 interface FoldState {
-    fun openState(areaItem: AreaItemView, position: Int)
-    fun closeState(areaItem: AreaItemView, position: Int)
+    fun openState(areaParent: AreaItemView, position: Int)
+    fun closeState(areaParent: AreaItemView, position: Int)
 }
