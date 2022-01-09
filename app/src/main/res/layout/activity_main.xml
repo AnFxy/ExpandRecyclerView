@@ -1,0 +1,122 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto" >
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/white"
+        android:orientation="vertical">
+
+        <!--Title bar-->
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/container_title"
+            android:layout_width="match_parent"
+            android:layout_height="80dp">
+            <!--Back arrow-->
+            <ImageView
+                android:id="@+id/icon_back"
+                android:layout_width="30dp"
+                android:layout_height="30dp"
+                android:padding="3dp"
+                android:layout_marginStart="10dp"
+                android:src="@drawable/arrow_back_black"
+                android:layout_marginEnd="5dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/et_input_course_name"/>
+            <!--Keyword search-->
+            <EditText
+                android:id="@+id/et_input_course_name"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@drawable/bg_edit_text"
+                android:gravity="center_vertical"
+                android:hint="@string/course_name_input_hint_text"
+                android:paddingStart="10dp"
+                android:paddingTop="10dp"
+                android:paddingBottom="10dp"
+                android:paddingEnd="40dp"
+                android:textColor="@color/text_color"
+                android:textSize="16sp"
+                android:layout_marginEnd="8dp"
+                android:singleLine="true"
+                android:ellipsize="end"
+                app:layout_constraintStart_toEndOf="@id/icon_back"
+                app:layout_constraintEnd_toStartOf="@id/tv_clear_input"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+            <!--Icon search-->
+            <ImageView
+                android:id="@+id/icon_search"
+                android:layout_width="24dp"
+                android:layout_height="24dp"
+                android:layout_marginStart="20dp"
+                android:src="@drawable/icon_search_black"
+                android:layout_marginEnd="12dp"
+                app:layout_constraintBottom_toBottomOf="@id/et_input_course_name"
+                app:layout_constraintTop_toTopOf="@id/et_input_course_name"
+                app:layout_constraintEnd_toEndOf="@id/et_input_course_name"/>
+            <!--Clear text-->
+            <TextView
+                android:id="@+id/tv_clear_input"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/clear_course_name_input_text"
+                android:layout_marginEnd="16dp"
+                android:textColor="@color/base_color_1764D7"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintStart_toEndOf="@id/et_input_course_name"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="0.5dp"
+            android:background="@color/base_color_A6A6A6"/>
+        <!--Distance from the present place-->
+        <Button
+            android:id="@+id/btn_present_place"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:text="@string/btn_present_place"
+            android:textSize="16dp"
+            android:layout_marginStart="19dp"
+            android:layout_marginEnd="18dp"
+            android:layout_marginTop="14dp"
+            android:paddingStart="15dp"
+            android:drawablePadding="22dp"
+            android:gravity="center_vertical"
+            android:background="@drawable/bg_btn_present_place"/>
+        <!--Area Recyclerview-->
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_area"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:layout_marginTop="10dp"/>
+        <!--Confirm Button-->
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <Button
+                android:id="@+id/btn_area_confirm"
+                android:layout_width="180dp"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_confirm"
+                android:textColor="@color/white"
+                android:textSize="18sp"
+                android:textStyle="bold"
+                android:background="@drawable/bg_btn_confirm"
+                android:layout_centerInParent="true"
+                android:layout_marginTop="9dp"
+                android:layout_marginBottom="10dp"
+                android:layout_gravity="center"/>
+        </RelativeLayout>
+    </LinearLayout>
+
+</layout>

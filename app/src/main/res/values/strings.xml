@@ -1,0 +1,7 @@
+<resources>
+    <string name="app_name">ExpandRecyclerView</string>
+    <string name="course_name_input_hint_text">ゴルフ場名を入力</string>
+    <string name="clear_course_name_input_text">クリア</string>
+    <string name="btn_present_place">現在地からの距離</string>
+    <string name="btn_confirm">決定</string>
+</resources>
